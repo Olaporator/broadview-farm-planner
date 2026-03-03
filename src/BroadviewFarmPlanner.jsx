@@ -96,11 +96,10 @@ const PLOTS = [
   { id: "h3c", area: "h3", name: "#8 Sage Bed", type: "Raised Bed", sqft: 60, status: "Underperforming", color: C.spring },
   { id: "h3d", area: "h3", name: "#4 Buckwheat / #7 Beets", type: "In-Ground", sqft: 100, status: "Recovering", color: C.soil },
   { id: "h3e", area: "h3", name: "#1 Live Compost Battery", type: "Compost", sqft: 40, status: "Active", color: C.warn },
-  { id: "h4a", area: "h4", name: "Pole Beans (top)", type: "Raised Bed", sqft: 80, status: "Active", color: C.raisedBed },
-  { id: "h4b", area: "h4", name: "Raspberry (was mint)", type: "Raised Bed", sqft: 60, status: "Active", color: C.raisedBed },
-  { id: "h4c", area: "h4", name: "Bed (lower same side)", type: "Raised Bed", sqft: 60, status: "Active", color: C.raisedBed },
-  { id: "h4d", area: "h4", name: "2nd Lane Bed (other side stairs)", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
-  { id: "h4e", area: "h4", name: "2nd Lane Bed (lower)", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
+  { id: "h4a", area: "h4", name: "Pole Beans", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
+  { id: "h4b", area: "h4", name: "Burdock Bed", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
+  { id: "h4d", area: "h4", name: "Raspberry & Herbs", type: "Raised Bed", sqft: 60, status: "Active", color: C.raisedBed },
+  { id: "h4e", area: "h4", name: "Lemon Balm", type: "Raised Bed", sqft: 40, status: "Active", color: C.raisedBed },
   { id: "h5a", area: "h5", name: "North Deck (Best Sun)", type: "Container", sqft: 80, status: "Active", color: C.dehydrator },
   { id: "h5b", area: "h5", name: "Mid Deck", type: "Container", sqft: 60, status: "Active", color: C.dehydrator },
   { id: "h5c", area: "h5", name: "South Deck (Most Sun)", type: "Container", sqft: 60, status: "Active", color: C.dehydrator },
@@ -118,22 +117,22 @@ const ML = {
   h3Bounds: { x: 70, y: 42, w: 450, h: 125 },       // Garden beds (between street and garage)
   garage: { x: 75, y: 175, w: 190, h: 140 },         // Left side below H3
   driveway: { x: 265, y: 145, w: 280, h: 170 },      // L-shape: driveway digs into house rect
-  house: { x: 90, y: 280, w: 460, h: 250 },           // MASSIVE — center, L-shape top-right cut
-  h6Bounds: { x: 200, y: 535, w: 260, h: 18 },        // Indoor deck plant area
-  deck: { x: 140, y: 558, w: 380, h: 18 },            // Horizontal deck below house
-  h5Bounds: { x: 145, y: 560, w: 370, h: 14 },        // Containers ON the deck
-  // Grape & Gooseberry sit at y~590
-  h1Bounds: { x: 65, y: 630, w: 575, h: 120 },        // Food forest — BOTTOM (west, downhill)
-  h2Bounds: { x: 15, y: 42, w: 50, h: 490 },          // Shade bed — LEFT (north) strip, flush with house bottom
-  h4Bounds: { x: 620, y: 175, w: 55, h: 380 },        // Two lanes — RIGHT (south) strip
-  stairs: { x: 640, y: 320, w: 12, h: 100 },           // Stairs between H4 lanes
+  house: { x: 75, y: 315, w: 490, h: 220 },            // L-shape, top flush with garage bottom
+  h6Bounds: { x: 200, y: 540, w: 260, h: 18 },        // Indoor deck plant area
+  deck: { x: 140, y: 563, w: 380, h: 18 },            // Horizontal deck below house
+  h5Bounds: { x: 145, y: 565, w: 370, h: 14 },        // Containers ON the deck
+  // Grape & Gooseberry sit at y~595
+  h1Bounds: { x: 65, y: 640, w: 575, h: 120 },        // Food forest — BOTTOM (west, downhill)
+  h2Bounds: { x: 15, y: 42, w: 50, h: 495 },          // Shade bed — LEFT (north) strip, flush with house bottom
+  h4Bounds: { x: 580, y: 175, w: 90, h: 360 },        // Wider, shorter — RIGHT (south) strip
+  stairs: { x: 615, y: 320, w: 12, h: 80 },            // Stairs between H4 lanes
 };
 
 const PLOT_POS = {
   // H1 — Food Forest (bottom, wide area). Douglas fir LEFT edge, Cherry RIGHT edge
-  h1a: { x: 500, y: 645, w: 120, h: 90 },           // Cherry Tree (RIGHT/south edge of land)
-  h1b: { x: 250, y: 650, w: 120, h: 85 },           // Graft Tree & Companions (center)
-  h1c: { x: 80, y: 645, w: 120, h: 90 },            // Douglas Fir & Bay Laurel (LEFT/north edge)
+  h1a: { x: 500, y: 655, w: 120, h: 90 },           // Cherry Tree (RIGHT/south edge of land)
+  h1b: { x: 250, y: 660, w: 120, h: 85 },           // Graft Tree & Companions (center)
+  h1c: { x: 80, y: 655, w: 120, h: 90 },            // Douglas Fir & Bay Laurel (LEFT/north edge)
 
   // H2 — Shade (left strip). h2a=burdock at bottom (flush w house), h2c=blackberry/huckleberry row above
   h2a: { x: 18, y: 420, w: 44, h: 80 },              // Burdock — at bottom, flush with house bottom
@@ -146,22 +145,22 @@ const PLOT_POS = {
   h3d: { x: 300, y: 55, w: 80, h: 50 },             // #4 Buckwheat + #7 Beets
   h3c: { x: 410, y: 48, w: 80, h: 55 },             // #8 Sage bed + others
 
-  // H4 — Right (south) side. Lane 1 (left of stairs): h4a, h4b, h4c. Lane 2 (right): h4d, h4e
-  h4a: { x: 622, y: 180, w: 18, h: 60 },             // Lane 1 top — pole beans
-  h4b: { x: 622, y: 250, w: 18, h: 55 },             // Lane 1 mid — raspberry (was mint)
-  h4c: { x: 622, y: 440, w: 18, h: 70 },             // Lane 1 bottom
-  h4d: { x: 654, y: 180, w: 18, h: 60 },             // Lane 2 top (other side stairs)
-  h4e: { x: 654, y: 250, w: 18, h: 55 },             // Lane 2 bottom
+  // H4 — Right (south) side. Left lane: pole beans + burdock. Right lane: raspberry + lemon balm
+  // Strawberry pot is a circle at upper-left of H4 box (rendered separately in SVG)
+  h4a: { x: 583, y: 220, w: 35, h: 70 },             // Left lane — pole beans (below strawberry pot)
+  h4b: { x: 583, y: 300, w: 35, h: 70 },             // Left lane — burdock (below pole beans)
+  h4d: { x: 633, y: 195, w: 35, h: 120 },            // Right lane — raspberry & herbs
+  h4e: { x: 633, y: 440, w: 35, h: 70 },             // Right lane bottom — lemon balm
 
   // H5 — Deck containers (horizontal row on deck)
-  h5a: { x: 155, y: 561, w: 80, h: 12 },
-  h5b: { x: 250, y: 561, w: 80, h: 12 },
-  h5c: { x: 345, y: 561, w: 80, h: 12 },
+  h5a: { x: 155, y: 566, w: 80, h: 12 },
+  h5b: { x: 250, y: 566, w: 80, h: 12 },
+  h5c: { x: 345, y: 566, w: 80, h: 12 },
 
   // H6 — Indoor plant area (between house and deck)
-  h6a: { x: 210, y: 537, w: 70, h: 14 },
-  h6b: { x: 300, y: 537, w: 70, h: 14 },
-  h6c: { x: 390, y: 537, w: 60, h: 14 },
+  h6a: { x: 210, y: 542, w: 70, h: 14 },
+  h6b: { x: 300, y: 542, w: 70, h: 14 },
+  h6c: { x: 390, y: 542, w: 60, h: 14 },
 };
 
 const METHODS = {
@@ -371,81 +370,42 @@ const PLANTS = [
       { season: "Spring", action: "Sow", notes: "Reseed for nitrogen fixing. Some regrew from prior year." },
       { season: "Summer", action: "Harvest", notes: "Chop and drop before flowering for green manure." },
     ]},
-  { id: "kale", name: "Kale", plot: "h4a", type: "Annual/Biennial", count: "3-4 plants",
-    maintenance: [
-      { season: "Spring", action: "Sow", notes: "Transplant after last frost." },
-      { season: "Summer", action: "Harvest", notes: "Pick lower leaves; leave growing tip." },
-      { season: "Fall", action: "Harvest", notes: "Sweeter after frost; lasts into winter." },
-    ]},
-  { id: "spinach", name: "Spinach", plot: "h4a", type: "Annual", count: "~20 plants",
-    maintenance: [
-      { season: "Spring", action: "Sow", notes: "Direct sow as soon as soil workable." },
-      { season: "Spring", action: "Harvest", notes: "Baby leaves at 3-4 weeks." },
-      { season: "Fall", action: "Sow", notes: "Plant 6-8 weeks before first frost." },
-    ]},
-  { id: "lettuce", name: "Lettuce", plot: "h4a", type: "Annual", count: "~15 plants",
-    maintenance: [
-      { season: "Spring", action: "Sow", notes: "Direct sow or transplant; succession sow." },
-      { season: "Summer", action: "Harvest", notes: "Cut-and-come-again outer leaves." },
-      { season: "Fall", action: "Sow", notes: "Fall crop for cool weather." },
-    ]},
-  { id: "broccoli", name: "Broccoli", plot: "h4a", type: "Annual", count: "2-3 plants",
-    maintenance: [
-      { season: "Spring", action: "Sow", notes: "Transplant 2-4 weeks before last frost." },
-      { season: "Summer", action: "Harvest", notes: "Cut main head; side shoots follow." },
-    ]},
-  { id: "radish", name: "Radish (rotate)", plot: "h4a", type: "Annual", count: "~20 seeds",
-    maintenance: [
-      { season: "Spring", action: "Sow", notes: "Direct sow; ready in 3-4 weeks." },
-      { season: "Fall", action: "Sow", notes: "Spring and fall crops; skip summer heat." },
-    ]},
-  { id: "sunchokes", name: "Sunchokes", plot: "h4b", type: "Perennial", count: "8-10 tubers",
-    maintenance: [
-      { season: "Spring", action: "Nutrient", notes: "Minimal care; grows in poor soil." },
-      { season: "Fall", action: "Harvest", notes: "Dig tubers after frost; sweeter then." },
-    ]},
-  { id: "raspberries", name: "Raspberries", plot: "h4b", type: "Perennial", count: "4-6 canes",
+  { id: "raspberries", name: "Raspberries", plot: "h4d", type: "Perennial", count: "4-6 canes",
     maintenance: [
       { season: "Winter", action: "Prune", notes: "Cut back dead canes; thin dense growth." },
       { season: "Summer", action: "Harvest", notes: "Pick when fully ripe; soft and sweet." },
     ]},
-  { id: "rosemary", name: "Rosemary", plot: "h4b", type: "Perennial Herb", count: "1-2 plants",
+  { id: "rosemary", name: "Rosemary", plot: "h4d", type: "Perennial Herb", count: "1-2 plants",
     maintenance: [
       { season: "Spring", action: "Prune", notes: "Shape and rejuvenate with light pruning." },
       { season: "Summer", action: "Harvest", notes: "Pinch sprigs for cooking." },
     ]},
-  { id: "thyme_h4", name: "Thyme", plot: "h4b", type: "Perennial Herb", count: "2-3 plants",
+  { id: "sunchokes", name: "Sunchokes", plot: "h4d", type: "Perennial", count: "8-10 tubers",
+    maintenance: [
+      { season: "Spring", action: "Nutrient", notes: "Minimal care; grows in poor soil." },
+      { season: "Fall", action: "Harvest", notes: "Dig tubers after frost; sweeter then." },
+    ]},
+  { id: "thyme_h4", name: "Thyme", plot: "h4d", type: "Perennial Herb", count: "2-3 plants",
     maintenance: [
       { season: "Spring", action: "Prune", notes: "Cut back 1/3 to refresh." },
       { season: "Summer", action: "Harvest", notes: "Pinch for culinary use." },
     ]},
-  { id: "grapes", name: "Grapes", plot: "h4c", type: "Perennial Vine", count: "2-3 vines",
+  { id: "burdock_h4", name: "Burdock", plot: "h4b", type: "Biennial", count: "3-5 plants",
     maintenance: [
-      { season: "Winter", action: "Prune", notes: "Major pruning while dormant; establish structure." },
-      { season: "Summer", action: "Prune", notes: "Thin fruit clusters; train vines." },
-      { season: "Fall", action: "Harvest", notes: "Pick when sweet; can eat fresh or ferment." },
-    ]},
-  { id: "kiwi", name: "Kiwi", plot: "h4c", type: "Perennial Vine", count: "2-3 vines",
-    maintenance: [
-      { season: "Winter", action: "Prune", notes: "Thin vines; maintain structure on trellis." },
-      { season: "Fall", action: "Harvest", notes: "Harvest after frost for sweetness." },
+      { season: "Spring", action: "Sow", notes: "Direct sow; deep taproot needs loose soil." },
+      { season: "Fall", action: "Harvest", notes: "Dig roots at end of first year for best flavor." },
     ]},
   { id: "pole_beans", name: "Pole Beans", plot: "h4a", type: "Annual", count: "~20 seeds",
     maintenance: [
       { season: "Spring", action: "Sow", notes: "Sow after last frost; train on trellis." },
       { season: "Summer", action: "Harvest", notes: "Pick every 2-3 days for tender beans." },
     ]},
-  { id: "raspberry_h4", name: "Raspberry (replaced mint)", plot: "h4b", type: "Perennial", count: "4-6 canes",
-    maintenance: [
-      { season: "Spring", action: "Prune", notes: "Cut back hard; manage spread with container." },
-      { season: "Summer", action: "Harvest", notes: "Harvest leaves regularly for tea/garnish." },
-    ]},
-  { id: "lemon_balm", name: "Lemon Balm", plot: "h4d", type: "Perennial Herb", count: "1-2 plants",
+  { id: "lemon_balm", name: "Lemon Balm", plot: "h4e", type: "Perennial Herb", count: "1-2 plants",
     maintenance: [
       { season: "Spring", action: "Prune", notes: "Cut back; manage spread." },
       { season: "Summer", action: "Harvest", notes: "Pinch leaves for tea and flavor." },
     ]},
-  { id: "strawberry", name: "Everbearing Strawberries", plot: "h4e", type: "Perennial", count: "~15 plants",
+  { id: "strawberry_pot", name: "Strawberry Pot", plot: "h4a", type: "Container Perennial", count: "1 pot",
     maintenance: [
       { season: "Spring", action: "Nutrient", notes: "Top-dress with compost." },
       { season: "Summer", action: "Harvest", notes: "Produces multiple flushes; pick regularly." },
@@ -925,9 +885,9 @@ export default function BroadviewFarmPlanner() {
               </g>
             ))}
 
-            {/* Fig tree — standalone between H3 and garage */}
-            <circle cx={270} cy={155} r={8} fill={C.spring + "33"} stroke={C.spring} strokeWidth={1} />
-            <text x={270} y={158} textAnchor="middle" fill={C.text} fontSize={5} fontWeight={700}>Fig</text>
+            {/* Fig tree — standalone between H3 and garage, shifted right per user markup */}
+            <circle cx={350} cy={155} r={10} fill={C.spring + "33"} stroke={C.spring} strokeWidth={1.5} />
+            <text x={350} y={158} textAnchor="middle" fill={C.text} fontSize={5} fontWeight={700}>Fig</text>
 
             {/* Last ditch arrow pointing right toward garage */}
             <text x={ML.h3Bounds.x + 5} y={ML.h3Bounds.y + ML.h3Bounds.h - 5} fill={C.spring + "55"} fontSize={5}>Last Ditch Area →</text>
@@ -957,13 +917,16 @@ export default function BroadviewFarmPlanner() {
             <text x={ML.garage.x + 88} y={ML.garage.y + ML.garage.h + 11}
               textAnchor="middle" fill={C.spring + "88"} fontSize={5}>Arugula &amp; Strawberry (#9)</text>
 
-            {/* ═══ HOUSE — massive center, L-shape (top-right corner cut for driveway) ═══ */}
-            <path d={`M ${ML.house.x} ${ML.house.y} h ${ML.house.w - 200} v ${-30} h 200 v ${ML.house.h + 30} h ${-ML.house.w} Z`}
+            {/* ═══ HOUSE — L-shape, top flush with garage bottom, top-right cut for driveway ═══ */}
+            <path d={`M ${ML.house.x} ${ML.house.y}
+              h ${ML.garage.w} v ${-ML.house.y + ML.garage.y + ML.garage.h}
+              h ${ML.house.w - ML.garage.w} v ${ML.house.h}
+              h ${-ML.house.w} Z`}
               fill="#252530" stroke="#555" strokeWidth={1} />
-            <text x={ML.house.x + 200} y={ML.house.y + ML.house.h/2}
+            <text x={ML.house.x + ML.house.w/2 - 40} y={ML.house.y + ML.house.h/2 + 10}
               textAnchor="middle" fill={C.textMuted} fontSize={10} fontWeight={700}
-              transform={`rotate(-90,${ML.house.x + 200},${ML.house.y + ML.house.h/2})`}>HOUSE</text>
-            <text x={ML.house.x + ML.house.w/2 - 50} y={ML.house.y + ML.house.h/2 + 15}
+              transform={`rotate(-90,${ML.house.x + ML.house.w/2 - 40},${ML.house.y + ML.house.h/2 + 10})`}>HOUSE</text>
+            <text x={ML.house.x + ML.house.w/2} y={ML.house.y + ML.house.h/2 + 25}
               textAnchor="middle" fill={C.textDim} fontSize={6}>2,120 sqft</text>
 
             {/* ═══ H6 — Indoor deck plant area (between house bottom and deck) ═══ */}
@@ -995,10 +958,10 @@ export default function BroadviewFarmPlanner() {
             {renderPlot("h5c", "🌿")}
 
             {/* ═══ GRAPE & GOOSEBERRY — below deck ═══ */}
-            <circle cx={200} cy={598} r={10} fill={C.warn + "15"} stroke={C.warn + "44"} strokeWidth={1} />
-            <text x={200} y={615} textAnchor="middle" fill={C.warn + "88"} fontSize={6} fontWeight={700}>Gooseberry</text>
-            <circle cx={380} cy={598} r={10} fill={C.summer + "15"} stroke={C.summer + "44"} strokeWidth={1} />
-            <text x={380} y={615} textAnchor="middle" fill={C.summer + "88"} fontSize={6} fontWeight={700}>Grape</text>
+            <circle cx={200} cy={603} r={10} fill={C.warn + "15"} stroke={C.warn + "44"} strokeWidth={1} />
+            <text x={200} y={620} textAnchor="middle" fill={C.warn + "88"} fontSize={6} fontWeight={700}>Gooseberry</text>
+            <circle cx={380} cy={603} r={10} fill={C.summer + "15"} stroke={C.summer + "44"} strokeWidth={1} />
+            <text x={380} y={620} textAnchor="middle" fill={C.summer + "88"} fontSize={6} fontWeight={700}>Grape</text>
 
             {/* ═══ H1 — FOOD FOREST (bottom of lot, west/downhill) ═══ */}
             <rect x={ML.h1Bounds.x} y={ML.h1Bounds.y} width={ML.h1Bounds.w} height={ML.h1Bounds.h}
@@ -1009,19 +972,19 @@ export default function BroadviewFarmPlanner() {
               textAnchor="middle" fill={C.raised + "aa"} fontSize={8} fontWeight={700}>H1 Food Forest</text>
 
             {/* Douglas Fir at LEFT (north) edge of land */}
-            <circle cx={120} cy={690} r={30} fill={C.water + "08"} stroke={C.water + "33"} strokeWidth={1.5} />
-            <text x={120} y={685} textAnchor="middle" fill={C.water} fontSize={14}>🌲</text>
-            <text x={120} y={725} textAnchor="middle" fill={C.water + "66"} fontSize={5} fontWeight={700}>Douglas Fir</text>
+            <circle cx={120} cy={700} r={30} fill={C.water + "08"} stroke={C.water + "33"} strokeWidth={1.5} />
+            <text x={120} y={695} textAnchor="middle" fill={C.water} fontSize={14}>🌲</text>
+            <text x={120} y={735} textAnchor="middle" fill={C.water + "66"} fontSize={5} fontWeight={700}>Douglas Fir</text>
 
             {/* Cherry at RIGHT (south) edge of land */}
-            <circle cx={560} cy={690} r={28} fill={C.fall + "08"} stroke={C.fall + "33"} strokeWidth={1.5} />
-            <text x={560} y={685} textAnchor="middle" fill={C.fall} fontSize={14}>🌳</text>
-            <text x={560} y={722} textAnchor="middle" fill={C.fall + "66"} fontSize={5} fontWeight={700}>Cherry</text>
+            <circle cx={560} cy={700} r={28} fill={C.fall + "08"} stroke={C.fall + "33"} strokeWidth={1.5} />
+            <text x={560} y={695} textAnchor="middle" fill={C.fall} fontSize={14}>🌳</text>
+            <text x={560} y={732} textAnchor="middle" fill={C.fall + "66"} fontSize={5} fontWeight={700}>Cherry</text>
 
             {/* Graft tree center */}
-            <circle cx={330} cy={695} r={22} fill={C.spring + "08"} stroke={C.spring + "33"} strokeWidth={1} />
-            <text x={330} y={690} textAnchor="middle" fill={C.spring} fontSize={12}>🌳</text>
-            <text x={330} y={722} textAnchor="middle" fill={C.spring + "66"} fontSize={5}>Graft</text>
+            <circle cx={330} cy={705} r={22} fill={C.spring + "08"} stroke={C.spring + "33"} strokeWidth={1} />
+            <text x={330} y={700} textAnchor="middle" fill={C.spring} fontSize={12}>🌳</text>
+            <text x={330} y={732} textAnchor="middle" fill={C.spring + "66"} fontSize={5}>Graft</text>
 
             {renderPlot("h1a", "h1a")}
             {renderPlot("h1b", "h1b")}
@@ -1051,15 +1014,20 @@ export default function BroadviewFarmPlanner() {
                 transform={`rotate(-90,${ML.stairs.x + ML.stairs.w/2},${ML.stairs.y + ML.stairs.h/2})`}>Stairs</text>
             </g>
 
-            {/* ═══ H4 — BEDS (right/south strip) ═══ */}
+            {/* ═══ H4 — BEDS (right/south strip, wider/shorter) ═══ */}
             <rect x={ML.h4Bounds.x} y={ML.h4Bounds.y} width={ML.h4Bounds.w} height={ML.h4Bounds.h}
               rx={2} fill={C.summer + "06"} stroke={selectedArea === "h4" ? C.accent : C.summer + "22"}
               strokeWidth={selectedArea === "h4" ? 2 : 1}
               onClick={() => handleSelectArea("h4")} style={{ cursor: "pointer" }} />
 
+            {/* Strawberry pot — circle upper-left of H4 box */}
+            <circle cx={ML.h4Bounds.x + 20} cy={ML.h4Bounds.y + 18} r={12}
+              fill={C.danger + "18"} stroke={C.danger + "55"} strokeWidth={1} />
+            <text x={ML.h4Bounds.x + 20} y={ML.h4Bounds.y + 14} textAnchor="middle" fill={C.danger + "88"} fontSize={4}>Strawberry</text>
+            <text x={ML.h4Bounds.x + 20} y={ML.h4Bounds.y + 21} textAnchor="middle" fill={C.danger} fontSize={8}>🍓</text>
+
             {renderPlot("h4a", "h4a")}
             {renderPlot("h4b", "h4b")}
-            {renderPlot("h4c", "h4c")}
             {renderPlot("h4d", "h4d")}
             {renderPlot("h4e", "h4e")}
 
@@ -1086,7 +1054,7 @@ export default function BroadviewFarmPlanner() {
             </g>
 
             {/* Elevation notes at bottom */}
-            <text x={350} y={770} textAnchor="middle" fill={C.textDim} fontSize={6}>
+            <text x={350} y={780} textAnchor="middle" fill={C.textDim} fontSize={6}>
               ↑ ~300ft (street) — slopes downhill — ~280ft (neighbor fence) ↓
             </text>
 
