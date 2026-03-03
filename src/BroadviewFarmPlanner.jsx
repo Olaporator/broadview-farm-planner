@@ -16,8 +16,7 @@ const C = {
   infra: "#8a7a5a", land: "#1a2a32",
 };
 
-const VB = { w: 820, h: 710 };
-const VB_OFFSET = { x: -60, y: 40 }; // offset to center -90° rotated content
+const VB = { w: 700, h: 780 }; // portrait, snug fit around content
 
 // ─── Area Data ───
 const AREAS = [
@@ -110,9 +109,9 @@ const PLOTS = [
 ];
 
 // ─── SVG Map Layout ───
-// Landscape view (rotated -90° CCW): Left=Street(east), Right=Food Forest(west)
-// Bottom=North(H2 shade), Top=South(H4 beds/stairs)
-// ViewBox: 820 x 710, content rotated -90° around (345, 390)
+// Portrait view: Top=Street(east,300ft), Bottom=Food Forest(west,280ft)
+// Left=North(H2 shade), Right=South(H4 beds/stairs)
+// ViewBox: 700 x 780, snug fit — no rotation
 const ML = {
   street: { x: 65, y: 15, w: 575, h: 22 },          // 3rd Ave NW — horizontal at TOP
   h3Bounds: { x: 70, y: 42, w: 450, h: 125 },       // Garden beds (between street and garage)
@@ -507,7 +506,7 @@ const MaintenanceMatrix = ({ plant }) => {
 
 // ─── Main App ───
 export default function BroadviewFarmPlanner() {
-  const [vb, setVb] = useState({ x: VB_OFFSET.x, y: VB_OFFSET.y, w: VB.w, h: VB.h });
+  const [vb, setVb] = useState({ x: 0, y: 0, w: VB.w, h: VB.h });
   const [selectedArea, setSelectedArea] = useState(null);
   const [selectedPlot, setSelectedPlot] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(null);
@@ -764,7 +763,7 @@ export default function BroadviewFarmPlanner() {
     const nw = Math.min(VB.w * 1.5, prev.w * 1.4); const nh = nw * VB.h / VB.w;
     return { x: prev.x + (prev.w - nw) * 0.5, y: prev.y + (prev.h - nh) * 0.5, w: nw, h: nh };
   }), []);
-  const resetZoom = useCallback(() => setVb({ x: VB_OFFSET.x, y: VB_OFFSET.y, w: VB.w, h: VB.h }), []);
+  const resetZoom = useCallback(() => setVb({ x: 0, y: 0, w: VB.w, h: VB.h }), []);
 
   const zoomToRect = useCallback((rect, padding = 30) => {
     const tw = rect.w + padding * 2;
@@ -859,11 +858,8 @@ export default function BroadviewFarmPlanner() {
             style={{ width: "100%", height: "auto", background: C.bg, borderRadius: 10, border: `1px solid ${C.border}`, cursor: "grab", userSelect: "none", touchAction: "none" }}
             onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp} onDoubleClick={onDoubleClick}>
 
-            {/* Rotate entire map -90° CCW: top→left, bottom→right, left→bottom, right→top */}
-            <g transform="rotate(-90, 345, 390)">
-
-            {/* Background lot */}
-            <rect x={10} y={10} width={680} height={760} rx={8} fill={C.land} />
+            {/* Background lot — no rotation, portrait */}
+            <rect x={0} y={0} width={700} height={780} rx={8} fill={C.land} />
             <text x={350} y={8} textAnchor="middle" fill={C.textDim} fontSize={8}>10737 3rd Ave NW, Seattle WA 98177 — 6,500 sqft</text>
 
             {/* Property boundary */}
@@ -1042,20 +1038,18 @@ export default function BroadviewFarmPlanner() {
               ↑ ~300ft (street) — slopes downhill — ~280ft (neighbor fence) ↓
             </text>
 
-            </g>{/* end rotation group */}
-
-            {/* ═══ COMPASS (top-right, outside rotation) ═══ */}
-            <g transform="translate(720, 70)">
-              <text x={0} y={-8} textAnchor="middle" fill={C.accent} fontSize={6} fontWeight={700}>N</text>
-              <text x={12} y={3} fill={C.accent + "88"} fontSize={5}>E</text>
-              <text x={0} y={14} fill={C.accent + "88"} fontSize={5} textAnchor="middle">S</text>
-              <text x={-12} y={3} fill={C.accent + "88"} fontSize={5} textAnchor="end">W</text>
+            {/* ═══ COMPASS (top-right) — Up=East (3rd Ave), Down=West, Left=North, Right=South ═══ */}
+            <g transform="translate(660, 30)">
+              <text x={0} y={-8} textAnchor="middle" fill={C.accent} fontSize={6} fontWeight={700}>E</text>
+              <text x={12} y={3} fill={C.accent + "88"} fontSize={5}>S</text>
+              <text x={0} y={14} fill={C.accent + "88"} fontSize={5} textAnchor="middle">W</text>
+              <text x={-12} y={3} fill={C.accent + "88"} fontSize={5} textAnchor="end">N</text>
               <line x1={0} y1={-5} x2={0} y2={8} stroke={C.accent + "44"} strokeWidth={0.5} />
               <line x1={-8} y1={0} x2={8} y2={0} stroke={C.accent + "44"} strokeWidth={0.5} />
             </g>
 
-            {/* ═══ LEGEND (bottom-right, outside rotation) ═══ */}
-            <g transform="translate(640, 600)">
+            {/* ═══ LEGEND (bottom-right) ═══ */}
+            <g transform="translate(570, 650)">
               <rect x={-6} y={-10} width={95} height={100} rx={4} fill={C.bgCard + "dd"} stroke={C.border} strokeWidth={0.5} />
               <text x={0} y={0} fill={C.textDim} fontSize={7} fontWeight={700}>Legend</text>
               {[["Food Forest", C.raised], ["Shade", "#5a7a6a"], ["Garden", C.spring], ["Beds", C.summer], ["Deck", C.water], ["Indoor", C.greenhouse]].map(([label, color], i) => (
