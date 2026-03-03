@@ -855,7 +855,7 @@ export default function BroadviewFarmPlanner() {
       <div style={{ display: "grid", gridTemplateColumns: view === "map" || isMobile ? "1fr" : "1fr 380px", gap: 16 }}>
         <div ref={containerRef} style={{ position: "relative" }}>
           <svg ref={svgRef} viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`}
-            style={{ width: "100%", height: "auto", background: C.bg, borderRadius: 10, border: `1px solid ${C.border}`, cursor: "grab", userSelect: "none", touchAction: "none" }}
+            style={{ width: "100%", maxHeight: "calc(100vh - 160px)", background: C.bg, borderRadius: 10, border: `1px solid ${C.border}`, cursor: "grab", userSelect: "none", touchAction: "none" }}
             onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp} onDoubleClick={onDoubleClick}>
 
             {/* Background lot — no rotation, portrait */}
