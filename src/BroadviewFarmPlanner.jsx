@@ -16,7 +16,7 @@ const C = {
   infra: "#8a7a5a", land: "#1a2a32",
 };
 
-const VB = { w: 700, h: 1000 };
+const VB = { w: 1000, h: 750 };
 
 // ─── Area Data ───
 const AREAS = [
@@ -109,30 +109,32 @@ const PLOTS = [
 ];
 
 // ─── SVG Map Layout ───
-// Portrait view: Top=Street(east,300ft), Bottom=Food Forest(west,280ft)
+// Landscape view (rotated -10° CCW): Top=Street(east), Bottom=Food Forest(west)
 // Left=North(H2 shade), Right=South(H4 beds/stairs)
-// ViewBox: 700 x 1000
+// ViewBox: 1000 x 750, content rotated -10°
 const ML = {
   street: { x: 65, y: 15, w: 575, h: 22 },          // 3rd Ave NW — horizontal at TOP
   h3Bounds: { x: 70, y: 42, w: 450, h: 125 },       // Garden beds (between street and garage)
-  garage: { x: 75, y: 175, w: 190, h: 140 },         // Left side below H3
-  driveway: { x: 265, y: 145, w: 280, h: 170 },      // L-shape: driveway digs into house rect
+  garage: { x: 75, y: 175, w: 275, h: 140 },         // Stretched right to fig tree
+  driveway: { x: 350, y: 145, w: 195, h: 170 },      // Starts at garage right edge
   house: { x: 75, y: 315, w: 490, h: 220 },            // L-shape, top flush with garage bottom
-  h6Bounds: { x: 200, y: 540, w: 260, h: 18 },        // Indoor deck plant area
-  deck: { x: 140, y: 563, w: 380, h: 18 },            // Horizontal deck below house
-  h5Bounds: { x: 145, y: 565, w: 370, h: 14 },        // Containers ON the deck
-  // Grape & Gooseberry sit at y~595
-  h1Bounds: { x: 65, y: 640, w: 575, h: 120 },        // Food forest — BOTTOM (west, downhill)
-  h2Bounds: { x: 15, y: 42, w: 50, h: 495 },          // Shade bed — LEFT (north) strip, flush with house bottom
-  h4Bounds: { x: 580, y: 175, w: 90, h: 360 },        // Wider, shorter — RIGHT (south) strip
+  h6Bounds: { x: 200, y: 515, w: 260, h: 18 },        // Indoor — INSIDE house, bottom flush w/ house bottom (535-18=517→515)
+  deck: { x: 140, y: 540, w: 380, h: 18 },            // Horizontal deck below house
+  h5Bounds: { x: 145, y: 542, w: 370, h: 14 },        // Containers ON the deck
+  // Grape & Gooseberry sit at y~575
+  h1Bounds: { x: 65, y: 610, w: 575, h: 120 },        // Food forest — BOTTOM (west, downhill)
+  h2Bounds: { x: 15, y: 42, w: 50, h: 495 },          // Shade bed — LEFT (north) strip
+  h4Bounds: { x: 580, y: 175, w: 90, h: 360 },        // RIGHT (south) strip
   stairs: { x: 615, y: 320, w: 12, h: 80 },            // Stairs between H4 lanes
+  // Arugula/strawberry planter: right of garage, above house line
+  arugulaPlanter: { x: 350, y: 299, w: 200, h: 16 },
 };
 
 const PLOT_POS = {
   // H1 — Food Forest (bottom, wide area). Douglas fir LEFT edge, Cherry RIGHT edge
-  h1a: { x: 500, y: 655, w: 120, h: 90 },           // Cherry Tree (RIGHT/south edge of land)
-  h1b: { x: 250, y: 660, w: 120, h: 85 },           // Graft Tree & Companions (center)
-  h1c: { x: 80, y: 655, w: 120, h: 90 },            // Douglas Fir & Bay Laurel (LEFT/north edge)
+  h1a: { x: 500, y: 625, w: 120, h: 90 },           // Cherry Tree (RIGHT/south edge of land)
+  h1b: { x: 250, y: 630, w: 120, h: 85 },           // Graft Tree & Companions (center)
+  h1c: { x: 80, y: 625, w: 120, h: 90 },            // Douglas Fir & Bay Laurel (LEFT/north edge)
 
   // H2 — Shade (left strip). h2a=burdock at bottom (flush w house), h2c=blackberry/huckleberry row above
   h2a: { x: 18, y: 420, w: 44, h: 80 },              // Burdock — at bottom, flush with house bottom
@@ -153,14 +155,14 @@ const PLOT_POS = {
   h4e: { x: 633, y: 440, w: 35, h: 70 },             // Right lane bottom — lemon balm
 
   // H5 — Deck containers (horizontal row on deck)
-  h5a: { x: 155, y: 566, w: 80, h: 12 },
-  h5b: { x: 250, y: 566, w: 80, h: 12 },
-  h5c: { x: 345, y: 566, w: 80, h: 12 },
+  h5a: { x: 155, y: 543, w: 80, h: 12 },
+  h5b: { x: 250, y: 543, w: 80, h: 12 },
+  h5c: { x: 345, y: 543, w: 80, h: 12 },
 
-  // H6 — Indoor plant area (between house and deck)
-  h6a: { x: 210, y: 542, w: 70, h: 14 },
-  h6b: { x: 300, y: 542, w: 70, h: 14 },
-  h6c: { x: 390, y: 542, w: 60, h: 14 },
+  // H6 — Indoor plant area (INSIDE house, bottom flush with house bottom)
+  h6a: { x: 210, y: 517, w: 70, h: 14 },
+  h6b: { x: 300, y: 517, w: 70, h: 14 },
+  h6c: { x: 390, y: 517, w: 60, h: 14 },
 };
 
 const METHODS = {
@@ -856,8 +858,11 @@ export default function BroadviewFarmPlanner() {
             style={{ width: "100%", height: "auto", background: C.bg, borderRadius: 10, border: `1px solid ${C.border}`, cursor: "grab", userSelect: "none", touchAction: "none" }}
             onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp} onDoubleClick={onDoubleClick}>
 
+            {/* Rotate entire map -10° CCW for landscape feel */}
+            <g transform="rotate(-10, 350, 400)">
+
             {/* Background lot */}
-            <rect x={10} y={10} width={680} height={980} rx={8} fill={C.land} />
+            <rect x={10} y={10} width={680} height={760} rx={8} fill={C.land} />
             <text x={350} y={8} textAnchor="middle" fill={C.textDim} fontSize={8}>10737 3rd Ave NW, Seattle WA 98177 — 6,500 sqft</text>
 
             {/* Property boundary */}
@@ -905,16 +910,16 @@ export default function BroadviewFarmPlanner() {
               textAnchor="middle" fill={C.textDim} fontSize={9} fontWeight={600}
               transform={`rotate(-90,${ML.garage.x + ML.garage.w/2},${ML.garage.y + ML.garage.h/2})`}>Garage</text>
 
-            {/* ═══ DRIVEWAY — L-shape: right of garage, digs into house rectangle ═══ */}
-            <path d={`M ${ML.driveway.x} ${ML.driveway.y} h ${ML.driveway.w} v ${ML.driveway.h} h -${ML.driveway.w - 80} v -${ML.driveway.h - 50} h -80 Z`}
-              fill={C.soil + "15"} stroke={C.soil + "33"} strokeWidth={0.5} />
-            <text x={ML.driveway.x + 120} y={ML.driveway.y + 50}
-              fill={C.soil + "77"} fontSize={6}>Driveway</text>
+            {/* ═══ DRIVEWAY — right of garage ═══ */}
+            <rect x={ML.driveway.x} y={ML.driveway.y} width={ML.driveway.w} height={ML.driveway.h}
+              fill={C.soil + "15"} stroke={C.soil + "33"} strokeWidth={0.5} rx={2} />
+            <text x={ML.driveway.x + ML.driveway.w/2} y={ML.driveway.y + 50}
+              textAnchor="middle" fill={C.soil + "77"} fontSize={6}>Driveway</text>
 
-            {/* Arugula/strawberry bed — narrow, adjacent to left side of garage bottom AND house top-left */}
-            <rect x={ML.garage.x} y={ML.garage.y + ML.garage.h} width={175} height={16} rx={2}
+            {/* Arugula/strawberry planter — flush w/ garage right edge & house top, outside */}
+            <rect x={ML.arugulaPlanter.x} y={ML.arugulaPlanter.y} width={ML.arugulaPlanter.w} height={ML.arugulaPlanter.h} rx={2}
               fill={C.spring + "18"} stroke={C.spring + "44"} strokeWidth={0.5} />
-            <text x={ML.garage.x + 88} y={ML.garage.y + ML.garage.h + 11}
+            <text x={ML.arugulaPlanter.x + ML.arugulaPlanter.w/2} y={ML.arugulaPlanter.y + 11}
               textAnchor="middle" fill={C.spring + "88"} fontSize={5}>Arugula &amp; Strawberry (#9)</text>
 
             {/* ═══ HOUSE — L-shape, top flush with garage bottom, top-right cut for driveway ═══ */}
@@ -929,13 +934,13 @@ export default function BroadviewFarmPlanner() {
             <text x={ML.house.x + ML.house.w/2} y={ML.house.y + ML.house.h/2 + 25}
               textAnchor="middle" fill={C.textDim} fontSize={6}>2,120 sqft</text>
 
-            {/* ═══ H6 — Indoor deck plant area (between house bottom and deck) ═══ */}
+            {/* ═══ H6 — Indoor plant area (INSIDE house, bottom flush w/ house bottom) ═══ */}
             <rect x={ML.h6Bounds.x} y={ML.h6Bounds.y} width={ML.h6Bounds.w} height={ML.h6Bounds.h}
-              rx={2} fill={C.greenhouse + "12"} stroke={selectedArea === "h6" ? C.accent : C.greenhouse + "33"}
+              rx={2} fill={C.greenhouse + "22"} stroke={selectedArea === "h6" ? C.accent : C.greenhouse + "55"}
               strokeWidth={selectedArea === "h6" ? 2 : 1}
               onClick={() => handleSelectArea("h6")} style={{ cursor: "pointer" }} />
             <text x={ML.h6Bounds.x + ML.h6Bounds.w/2} y={ML.h6Bounds.y + 12}
-              textAnchor="middle" fill={C.greenhouse + "88"} fontSize={5}>Indoor Deck Plant Area (H6)</text>
+              textAnchor="middle" fill={C.greenhouse + "cc"} fontSize={5}>Indoor Plant Area (H6)</text>
 
             {renderPlot("h6a", "🪴")}
             {renderPlot("h6b", "🪴")}
@@ -958,10 +963,10 @@ export default function BroadviewFarmPlanner() {
             {renderPlot("h5c", "🌿")}
 
             {/* ═══ GRAPE & GOOSEBERRY — below deck ═══ */}
-            <circle cx={200} cy={603} r={10} fill={C.warn + "15"} stroke={C.warn + "44"} strokeWidth={1} />
-            <text x={200} y={620} textAnchor="middle" fill={C.warn + "88"} fontSize={6} fontWeight={700}>Gooseberry</text>
-            <circle cx={380} cy={603} r={10} fill={C.summer + "15"} stroke={C.summer + "44"} strokeWidth={1} />
-            <text x={380} y={620} textAnchor="middle" fill={C.summer + "88"} fontSize={6} fontWeight={700}>Grape</text>
+            <circle cx={200} cy={575} r={10} fill={C.warn + "15"} stroke={C.warn + "44"} strokeWidth={1} />
+            <text x={200} y={592} textAnchor="middle" fill={C.warn + "88"} fontSize={6} fontWeight={700}>Gooseberry</text>
+            <circle cx={380} cy={575} r={10} fill={C.summer + "15"} stroke={C.summer + "44"} strokeWidth={1} />
+            <text x={380} y={592} textAnchor="middle" fill={C.summer + "88"} fontSize={6} fontWeight={700}>Grape</text>
 
             {/* ═══ H1 — FOOD FOREST (bottom of lot, west/downhill) ═══ */}
             <rect x={ML.h1Bounds.x} y={ML.h1Bounds.y} width={ML.h1Bounds.w} height={ML.h1Bounds.h}
@@ -972,19 +977,19 @@ export default function BroadviewFarmPlanner() {
               textAnchor="middle" fill={C.raised + "aa"} fontSize={8} fontWeight={700}>H1 Food Forest</text>
 
             {/* Douglas Fir at LEFT (north) edge of land */}
-            <circle cx={120} cy={700} r={30} fill={C.water + "08"} stroke={C.water + "33"} strokeWidth={1.5} />
-            <text x={120} y={695} textAnchor="middle" fill={C.water} fontSize={14}>🌲</text>
-            <text x={120} y={735} textAnchor="middle" fill={C.water + "66"} fontSize={5} fontWeight={700}>Douglas Fir</text>
+            <circle cx={120} cy={670} r={30} fill={C.water + "08"} stroke={C.water + "33"} strokeWidth={1.5} />
+            <text x={120} y={665} textAnchor="middle" fill={C.water} fontSize={14}>🌲</text>
+            <text x={120} y={705} textAnchor="middle" fill={C.water + "66"} fontSize={5} fontWeight={700}>Douglas Fir</text>
 
             {/* Cherry at RIGHT (south) edge of land */}
-            <circle cx={560} cy={700} r={28} fill={C.fall + "08"} stroke={C.fall + "33"} strokeWidth={1.5} />
-            <text x={560} y={695} textAnchor="middle" fill={C.fall} fontSize={14}>🌳</text>
-            <text x={560} y={732} textAnchor="middle" fill={C.fall + "66"} fontSize={5} fontWeight={700}>Cherry</text>
+            <circle cx={560} cy={670} r={28} fill={C.fall + "08"} stroke={C.fall + "33"} strokeWidth={1.5} />
+            <text x={560} y={665} textAnchor="middle" fill={C.fall} fontSize={14}>🌳</text>
+            <text x={560} y={702} textAnchor="middle" fill={C.fall + "66"} fontSize={5} fontWeight={700}>Cherry</text>
 
             {/* Graft tree center */}
-            <circle cx={330} cy={705} r={22} fill={C.spring + "08"} stroke={C.spring + "33"} strokeWidth={1} />
-            <text x={330} y={700} textAnchor="middle" fill={C.spring} fontSize={12}>🌳</text>
-            <text x={330} y={732} textAnchor="middle" fill={C.spring + "66"} fontSize={5}>Graft</text>
+            <circle cx={330} cy={675} r={22} fill={C.spring + "08"} stroke={C.spring + "33"} strokeWidth={1} />
+            <text x={330} y={670} textAnchor="middle" fill={C.spring} fontSize={12}>🌳</text>
+            <text x={330} y={702} textAnchor="middle" fill={C.spring + "66"} fontSize={5}>Graft</text>
 
             {renderPlot("h1a", "h1a")}
             {renderPlot("h1b", "h1b")}
@@ -1031,8 +1036,15 @@ export default function BroadviewFarmPlanner() {
             {renderPlot("h4d", "h4d")}
             {renderPlot("h4e", "h4e")}
 
-            {/* ═══ COMPASS (top-right) ═══ */}
-            <g transform="translate(660, 30)">
+            {/* Elevation notes at bottom */}
+            <text x={350} y={745} textAnchor="middle" fill={C.textDim} fontSize={6}>
+              ↑ ~300ft (street) — slopes downhill — ~280ft (neighbor fence) ↓
+            </text>
+
+            </g>{/* end rotation group */}
+
+            {/* ═══ COMPASS (top-right, outside rotation) ═══ */}
+            <g transform="translate(940, 40)">
               <text x={0} y={-8} textAnchor="middle" fill={C.accent} fontSize={6} fontWeight={700}>N</text>
               <text x={12} y={3} fill={C.accent + "88"} fontSize={5}>E</text>
               <text x={0} y={14} fill={C.accent + "88"} fontSize={5} textAnchor="middle">S</text>
@@ -1041,8 +1053,8 @@ export default function BroadviewFarmPlanner() {
               <line x1={-8} y1={0} x2={8} y2={0} stroke={C.accent + "44"} strokeWidth={0.5} />
             </g>
 
-            {/* ═══ LEGEND (bottom-right) ═══ */}
-            <g transform="translate(560, 790)">
+            {/* ═══ LEGEND (bottom-right, outside rotation) ═══ */}
+            <g transform="translate(870, 620)">
               <rect x={-6} y={-10} width={95} height={100} rx={4} fill={C.bgCard + "dd"} stroke={C.border} strokeWidth={0.5} />
               <text x={0} y={0} fill={C.textDim} fontSize={7} fontWeight={700}>Legend</text>
               {[["Food Forest", C.raised], ["Shade", "#5a7a6a"], ["Garden", C.spring], ["Beds", C.summer], ["Deck", C.water], ["Indoor", C.greenhouse]].map(([label, color], i) => (
@@ -1052,11 +1064,6 @@ export default function BroadviewFarmPlanner() {
                 </g>
               ))}
             </g>
-
-            {/* Elevation notes at bottom */}
-            <text x={350} y={780} textAnchor="middle" fill={C.textDim} fontSize={6}>
-              ↑ ~300ft (street) — slopes downhill — ~280ft (neighbor fence) ↓
-            </text>
 
           </svg>
 
