@@ -98,8 +98,10 @@ const PLOTS = [
   { id: "h3e", area: "h3", name: "#1 Live Compost Battery", type: "Compost", sqft: 40, status: "Active", color: C.warn },
   { id: "h4a", area: "h4", name: "Pole Beans", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
   { id: "h4b", area: "h4", name: "Burdock Bed", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
-  { id: "h4d", area: "h4", name: "Raspberry & Herbs", type: "Raised Bed", sqft: 60, status: "Active", color: C.raisedBed },
-  { id: "h4e", area: "h4", name: "Lemon Balm", type: "Raised Bed", sqft: 40, status: "Active", color: C.raisedBed },
+  { id: "h4d", area: "h4", name: "Greens Bed 1", type: "Raised Bed", sqft: 20, status: "Recovering", color: C.raisedBed },
+  { id: "h4f", area: "h4", name: "Greens Bed 2", type: "Raised Bed", sqft: 20, status: "Recovering", color: C.raisedBed },
+  { id: "h4g", area: "h4", name: "Raspberry Canes", type: "Raised Bed", sqft: 30, status: "Active", color: C.raisedBed },
+  { id: "h4e", area: "h4", name: "Lemon Balm & Wild Parsley", type: "Raised Bed", sqft: 40, status: "Active", color: C.raisedBed },
   { id: "h5a", area: "h5", name: "North Deck (Best Sun)", type: "Container", sqft: 80, status: "Active", color: C.dehydrator },
   { id: "h5b", area: "h5", name: "Mid Deck", type: "Container", sqft: 60, status: "Active", color: C.dehydrator },
   { id: "h5c", area: "h5", name: "South Deck (Most Sun)", type: "Container", sqft: 60, status: "Active", color: C.dehydrator },
@@ -151,8 +153,10 @@ const PLOT_POS = {
   // Strawberry pot is a circle at upper-left of H4 box (rendered separately in SVG)
   h4a: { x: 583, y: 220, w: 35, h: 70 },             // Left lane — pole beans (below strawberry pot)
   h4b: { x: 583, y: 300, w: 35, h: 70 },             // Left lane — burdock (below pole beans)
-  h4d: { x: 633, y: 195, w: 35, h: 120 },            // Right lane — raspberry & herbs
-  h4e: { x: 633, y: 440, w: 35, h: 70 },             // Right lane bottom — lemon balm
+  h4d: { x: 633, y: 195, w: 35, h: 35 },              // Right lane — greens bed 1 (top)
+  h4f: { x: 633, y: 235, w: 35, h: 35 },              // Right lane — greens bed 2
+  h4g: { x: 633, y: 285, w: 35, h: 50 },              // Right lane — raspberry canes
+  h4e: { x: 633, y: 440, w: 35, h: 70 },              // Right lane bottom — lemon balm + wild parsley
 
   // H5 — Deck containers (horizontal row on deck)
   h5a: { x: 155, y: 543, w: 80, h: 12 },
@@ -372,25 +376,22 @@ const PLANTS = [
       { season: "Spring", action: "Sow", notes: "Reseed for nitrogen fixing. Some regrew from prior year." },
       { season: "Summer", action: "Harvest", notes: "Chop and drop before flowering for green manure." },
     ]},
-  { id: "raspberries", name: "Raspberries", plot: "h4d", type: "Perennial", count: "4-6 canes",
+  { id: "greens_h4d", name: "Mixed Greens (remnants)", plot: "h4d", type: "Annual", count: "Sparse — rodent damage",
+    maintenance: [
+      { season: "Spring", action: "Sow", notes: "Resow greens where rodents thinned last year's crop." },
+      { season: "Summer", action: "Harvest", notes: "Cut-and-come-again harvest." },
+      { season: "Fall", action: "Protect", notes: "Row cover to deter rodents." },
+    ]},
+  { id: "greens_h4f", name: "Mixed Greens (remnants)", plot: "h4f", type: "Annual", count: "Sparse — rodent damage",
+    maintenance: [
+      { season: "Spring", action: "Sow", notes: "Resow greens where rodents thinned last year's crop." },
+      { season: "Summer", action: "Harvest", notes: "Cut-and-come-again harvest." },
+      { season: "Fall", action: "Protect", notes: "Row cover to deter rodents." },
+    ]},
+  { id: "raspberries", name: "Raspberries", plot: "h4g", type: "Perennial", count: "4-6 canes",
     maintenance: [
       { season: "Winter", action: "Prune", notes: "Cut back dead canes; thin dense growth." },
       { season: "Summer", action: "Harvest", notes: "Pick when fully ripe; soft and sweet." },
-    ]},
-  { id: "rosemary", name: "Rosemary", plot: "h4d", type: "Perennial Herb", count: "1-2 plants",
-    maintenance: [
-      { season: "Spring", action: "Prune", notes: "Shape and rejuvenate with light pruning." },
-      { season: "Summer", action: "Harvest", notes: "Pinch sprigs for cooking." },
-    ]},
-  { id: "sunchokes", name: "Sunchokes", plot: "h4d", type: "Perennial", count: "8-10 tubers",
-    maintenance: [
-      { season: "Spring", action: "Nutrient", notes: "Minimal care; grows in poor soil." },
-      { season: "Fall", action: "Harvest", notes: "Dig tubers after frost; sweeter then." },
-    ]},
-  { id: "thyme_h4", name: "Thyme", plot: "h4d", type: "Perennial Herb", count: "2-3 plants",
-    maintenance: [
-      { season: "Spring", action: "Prune", notes: "Cut back 1/3 to refresh." },
-      { season: "Summer", action: "Harvest", notes: "Pinch for culinary use." },
     ]},
   { id: "burdock_h4", name: "Burdock", plot: "h4b", type: "Biennial", count: "3-5 plants",
     maintenance: [
@@ -406,6 +407,11 @@ const PLANTS = [
     maintenance: [
       { season: "Spring", action: "Prune", notes: "Cut back; manage spread." },
       { season: "Summer", action: "Harvest", notes: "Pinch leaves for tea and flavor." },
+    ]},
+  { id: "wild_parsley", name: "Wild Parsley", plot: "h4e", type: "Perennial Herb", count: "2-3 plants",
+    maintenance: [
+      { season: "Spring", action: "Harvest", notes: "Pick young leaves for fresh use." },
+      { season: "Summer", action: "Harvest", notes: "Continue harvesting; let some go to seed for self-sowing." },
     ]},
   { id: "strawberry_pot", name: "Strawberry Pot", plot: "h4a", type: "Container Perennial", count: "1 pot",
     maintenance: [
@@ -1031,6 +1037,8 @@ export default function BroadviewFarmPlanner() {
             {renderPlot("h4a", "h4a")}
             {renderPlot("h4b", "h4b")}
             {renderPlot("h4d", "h4d")}
+            {renderPlot("h4f", "h4f")}
+            {renderPlot("h4g", "h4g")}
             {renderPlot("h4e", "h4e")}
 
             {/* Elevation notes at bottom */}
