@@ -92,8 +92,9 @@ const PLOTS = [
   { id: "h2a", area: "h2", name: "Burdock Bed", type: "Perennial Bed", sqft: 100, status: "Active", color: C.raisedBed },
   { id: "h2c", area: "h2", name: "Blackberry & Huckleberry Row", type: "Perennial Bed", sqft: 400, status: "Established", color: C.raisedBed },
   { id: "h3a", area: "h3", name: "#2 Last Ditch Bed (Rhubarb)", type: "In-Ground", sqft: 80, status: "Struggling", color: C.soil },
-  { id: "h3b", area: "h3", name: "#3 Hügel Raised Bed (Tomato/Squash/Basil)", type: "Hügelkultur", sqft: 100, status: "Active", color: C.spring },
-  { id: "h3c", area: "h3", name: "#8 Sage Bed", type: "Raised Bed", sqft: 60, status: "Underperforming", color: C.spring },
+  { id: "h3b", area: "h3", name: "#3 Hügel Raised Bed (Squash/Beans)", type: "Hügelkultur", sqft: 100, status: "Active", color: C.spring },
+  { id: "h3c", area: "h3", name: "#8 Tomato & Basil Bed", type: "Raised Bed", sqft: 60, status: "Active", color: C.spring },
+  { id: "h3f", area: "h3", name: "Sage Bed", type: "Raised Bed", sqft: 30, status: "Established", color: C.spring },
   { id: "h3d", area: "h3", name: "#4 Buckwheat / #7 Beets", type: "In-Ground", sqft: 100, status: "Recovering", color: C.soil },
   { id: "h3e", area: "h3", name: "#1 Live Compost Battery", type: "Compost", sqft: 40, status: "Active", color: C.warn },
   { id: "h4a", area: "h4", name: "Pole Beans", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
@@ -145,9 +146,10 @@ const PLOT_POS = {
   // H3 — Garden beds between street and garage (numbered areas 1-9)
   h3e: { x: 75, y: 48, w: 60, h: 45 },              // #1 Compost battery (top-left)
   h3a: { x: 75, y: 100, w: 80, h: 35 },             // #2 Last ditch / rhubarb
-  h3b: { x: 180, y: 48, w: 100, h: 55 },            // #3 Hügel raised bed
+  h3c: { x: 180, y: 48, w: 100, h: 55 },             // #8 Tomato/Basil bed (swapped from right)
   h3d: { x: 300, y: 55, w: 80, h: 50 },             // #4 Buckwheat + #7 Beets
-  h3c: { x: 410, y: 48, w: 80, h: 55 },             // #8 Sage bed + others
+  h3b: { x: 410, y: 48, w: 80, h: 55 },             // #3 Hügel raised bed (swapped from left)
+  h3f: { x: 410, y: 110, w: 80, h: 30 },            // Sage bed (below h3b, 2yr established)
 
   // H4 — Right (south) side. Left lane: pole beans + burdock. Right lane: raspberry + lemon balm
   // Strawberry pot is a circle at upper-left of H4 box (rendered separately in SVG)
@@ -330,17 +332,10 @@ const PLANTS = [
       { season: "Summer", action: "Harvest", notes: "Pinch tips regularly to encourage bushiness." },
       { season: "Summer", action: "Protect", notes: "Watch for pests attracted to tomatoes." },
     ]},
-  { id: "sage", name: "Sage (2yr established)", plot: "h3c", type: "Perennial Herb", count: "1-2 plants",
+  { id: "sage", name: "Sage (2yr established)", plot: "h3f", type: "Perennial Herb", count: "2 plants",
     maintenance: [
-      { season: "Spring", action: "Prune", notes: "Cut back 1/3 after winter." },
+      { season: "Spring", action: "Prune", notes: "Cut back 1/3 after winter. 2yr established — well-rooted." },
       { season: "Summer", action: "Harvest", notes: "Pinch leaves for culinary use." },
-    ]},
-  { id: "fig_tree", name: "Fig Tree (#5)", plot: "h3b", type: "Perennial Tree", count: "1 tree (1.5yr)",
-    maintenance: [
-      { season: "Winter", action: "Protect", notes: "Wrap or mulch heavily for PNW cold snaps." },
-      { season: "Spring", action: "Prune", notes: "Light pruning; remove dead wood." },
-      { season: "Summer", action: "Water", notes: "Deep soak weekly; figs need consistent moisture." },
-      { season: "Fall", action: "Harvest", notes: "Pick figs when soft and drooping." },
     ]},
   { id: "mugwort", name: "Mugwort (unwanted)", plot: "h3d", type: "Perennial Weed", count: "Invasive patch",
     maintenance: [
@@ -351,11 +346,6 @@ const PLANTS = [
     maintenance: [
       { season: "Spring", action: "Harvest", notes: "Pull remaining overwintered beets." },
       { season: "Spring", action: "Sow", notes: "Direct sow new crop after clearing." },
-    ]},
-  { id: "arugula_h3", name: "Arugula (#9)", plot: "h3b", type: "Annual", count: "Small patch",
-    maintenance: [
-      { season: "Spring", action: "Sow", notes: "Self-seeded; thin as needed. Bed is shallow—add soil." },
-      { season: "Summer", action: "Harvest", notes: "Harvest leaves young; bolts in heat." },
     ]},
   { id: "strawberry_h3", name: "Everbearing Strawberries (#9)", plot: "h3b", type: "Perennial", count: "A few plants",
     maintenance: [
@@ -963,6 +953,7 @@ export default function BroadviewFarmPlanner() {
             {renderPlot("h3b", "h3b")}
             {renderPlot("h3d", "h3d")}
             {renderPlot("h3c", "h3c")}
+            {renderPlot("h3f", "h3f")}
 
             {/* ═══ GARAGE — left side below H3 ═══ */}
             <rect x={ML.garage.x} y={ML.garage.y} width={ML.garage.w} height={ML.garage.h} rx={3}
