@@ -95,6 +95,7 @@ const PLOTS = [
   { id: "h3b", area: "h3", name: "#3 Hügel Raised Bed (Squash/Beans)", type: "Hügelkultur", sqft: 100, status: "Active", color: C.spring },
   { id: "h3c", area: "h3", name: "#8 Tomato & Basil Bed", type: "Raised Bed", sqft: 60, status: "Active", color: C.spring },
   { id: "h3f", area: "h3", name: "Sage Bed", type: "Raised Bed", sqft: 30, status: "Established", color: C.spring },
+  { id: "h3g", area: "h3", name: "Arugula & Strawberry Planter (#9)", type: "Raised Bed", sqft: 15, status: "Active", color: C.spring },
   { id: "h3d", area: "h3", name: "#4 Buckwheat / #7 Beets", type: "In-Ground", sqft: 100, status: "Recovering", color: C.soil },
   { id: "h3e", area: "h3", name: "#1 Live Compost Battery", type: "Compost", sqft: 40, status: "Active", color: C.warn },
   { id: "h4s", area: "h4", name: "Strawberry Pot", type: "Container", sqft: 5, status: "Active", color: C.danger },
@@ -130,8 +131,9 @@ const ML = {
   h2Bounds: { x: 15, y: 42, w: 50, h: 495 },          // Shade bed — LEFT (north) strip
   h4Bounds: { x: 580, y: 175, w: 90, h: 360 },        // RIGHT (south) strip
   stairs: { x: 615, y: 320, w: 12, h: 80 },            // Stairs between H4 lanes
-  // Arugula/strawberry planter: right of garage, above house line
-  arugulaPlanter: { x: 350, y: 299, w: 200, h: 16 },
+  // Arugula/strawberry planter: vertical strip, rotated 90° CW from northern axis
+  // Cuts into house — defines where the L-notch is (outdoor area)
+  arugulaPlanter: { x: 350, y: 299, w: 16, h: 100 },
 };
 
 const PLOT_POS = {
@@ -151,6 +153,7 @@ const PLOT_POS = {
   h3d: { x: 300, y: 55, w: 80, h: 50 },             // #4 Buckwheat + #7 Beets
   h3b: { x: 410, y: 48, w: 80, h: 55 },             // #3 Hügel raised bed (swapped from left)
   h3f: { x: 410, y: 110, w: 80, h: 30 },            // Sage bed (below h3b, 2yr established)
+  h3g: { x: 350, y: 299, w: 16, h: 100 },            // Arugula & Strawberry planter (vertical, cuts into house)
 
   // H4 — Right (south) side. Left lane: pole beans + burdock. Right lane: raspberry + lemon balm
   h4s: { x: 588, y: 181, w: 24, h: 24 },               // Strawberry pot — circle above left lane
@@ -348,11 +351,16 @@ const PLANTS = [
       { season: "Spring", action: "Harvest", notes: "Pull remaining overwintered beets." },
       { season: "Spring", action: "Sow", notes: "Direct sow new crop after clearing." },
     ]},
-  { id: "strawberry_h3", name: "Everbearing Strawberries (#9)", plot: "h3b", type: "Perennial", count: "A few plants",
+  { id: "strawberry_h3", name: "Everbearing Strawberries (#9)", plot: "h3g", type: "Perennial", count: "A few plants",
     maintenance: [
       { season: "Spring", action: "Nutrient", notes: "Top dress with compost. Shallow dirt limits growth—consider deeper bed." },
       { season: "Summer", action: "Water", notes: "Under roof overhang = poor rain exposure. Hand water regularly." },
       { season: "Summer", action: "Harvest", notes: "Pick when fully red; a couple doing decent." },
+    ]},
+  { id: "arugula_h3g", name: "Arugula (#9)", plot: "h3g", type: "Annual", count: "Small patch",
+    maintenance: [
+      { season: "Spring", action: "Sow", notes: "Self-seeded; thin as needed." },
+      { season: "Summer", action: "Harvest", notes: "Harvest leaves young; bolts in heat." },
     ]},
   { id: "volunteer_tomato", name: "Volunteer Tomato (#9)", plot: "h3b", type: "Annual", count: "1 plant",
     maintenance: [
@@ -969,16 +977,17 @@ export default function BroadviewFarmPlanner() {
             <text x={ML.driveway.x + ML.driveway.w/2} y={ML.driveway.y + 50}
               textAnchor="middle" fill={C.soil + "77"} fontSize={6}>Driveway</text>
 
-            {/* Arugula/strawberry planter — flush w/ garage right edge & house top, outside */}
-            <rect x={ML.arugulaPlanter.x} y={ML.arugulaPlanter.y} width={ML.arugulaPlanter.w} height={ML.arugulaPlanter.h} rx={2}
-              fill={C.spring + "18"} stroke={C.spring + "44"} strokeWidth={0.5} />
-            <text x={ML.arugulaPlanter.x + ML.arugulaPlanter.w/2} y={ML.arugulaPlanter.y + 11}
-              textAnchor="middle" fill={C.spring + "88"} fontSize={5}>Arugula &amp; Strawberry (#9)</text>
+            {/* Arugula/strawberry planter — vertical strip, clickable plot */}
+            {renderPlot("h3g", "h3g")}
 
-            {/* ═══ HOUSE — L-shape, top flush with garage bottom, top-right cut for driveway ═══ */}
+            {/* ═══ HOUSE — L-shape with planter notch cutting in from top ═══ */}
             <path d={`M ${ML.house.x} ${ML.house.y}
-              h ${ML.garage.w} v ${-ML.house.y + ML.garage.y + ML.garage.h}
-              h ${ML.house.w - ML.garage.w} v ${ML.house.h}
+              h ${ML.arugulaPlanter.x - ML.house.x}
+              v ${ML.arugulaPlanter.h - (ML.house.y - ML.arugulaPlanter.y)}
+              h ${ML.arugulaPlanter.w}
+              v ${-(ML.arugulaPlanter.h - (ML.house.y - ML.arugulaPlanter.y))}
+              h ${ML.house.x + ML.house.w - ML.arugulaPlanter.x - ML.arugulaPlanter.w}
+              v ${ML.house.h}
               h ${-ML.house.w} Z`}
               fill="#252530" stroke="#555" strokeWidth={1} />
             <text x={ML.house.x + ML.house.w/2 - 40} y={ML.house.y + ML.house.h/2 + 10}
