@@ -97,6 +97,7 @@ const PLOTS = [
   { id: "h3f", area: "h3", name: "Sage Bed", type: "Raised Bed", sqft: 30, status: "Established", color: C.spring },
   { id: "h3d", area: "h3", name: "#4 Buckwheat / #7 Beets", type: "In-Ground", sqft: 100, status: "Recovering", color: C.soil },
   { id: "h3e", area: "h3", name: "#1 Live Compost Battery", type: "Compost", sqft: 40, status: "Active", color: C.warn },
+  { id: "h4s", area: "h4", name: "Strawberry Pot", type: "Container", sqft: 5, status: "Active", color: C.danger },
   { id: "h4a", area: "h4", name: "Pole Beans", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
   { id: "h4b", area: "h4", name: "Burdock & Wild Mint", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
   { id: "h4d", area: "h4", name: "Greens Bed 1", type: "Raised Bed", sqft: 20, status: "Recovering", color: C.raisedBed },
@@ -152,8 +153,8 @@ const PLOT_POS = {
   h3f: { x: 410, y: 110, w: 80, h: 30 },            // Sage bed (below h3b, 2yr established)
 
   // H4 — Right (south) side. Left lane: pole beans + burdock. Right lane: raspberry + lemon balm
-  // Strawberry pot is a circle at upper-left of H4 box (rendered separately in SVG)
-  h4a: { x: 583, y: 220, w: 35, h: 70 },             // Left lane — pole beans (below strawberry pot)
+  h4s: { x: 588, y: 181, w: 24, h: 24 },               // Strawberry pot — circle above left lane
+  h4a: { x: 583, y: 220, w: 35, h: 70 },             // Left lane — pole beans
   h4b: { x: 583, y: 300, w: 35, h: 70 },             // Left lane — burdock (below pole beans)
   h4d: { x: 633, y: 195, w: 35, h: 35 },              // Right lane — greens bed 1 (top)
   h4f: { x: 633, y: 235, w: 35, h: 35 },              // Right lane — greens bed 2
@@ -408,7 +409,7 @@ const PLANTS = [
       { season: "Spring", action: "Harvest", notes: "Pick young leaves for fresh use." },
       { season: "Summer", action: "Harvest", notes: "Continue harvesting; let some go to seed for self-sowing." },
     ]},
-  { id: "strawberry_pot", name: "Strawberry Pot", plot: "h4a", type: "Container Perennial", count: "1 pot",
+  { id: "strawberry_pot", name: "Strawberry Pot", plot: "h4s", type: "Container Perennial", count: "1 pot",
     maintenance: [
       { season: "Spring", action: "Nutrient", notes: "Top-dress with compost." },
       { season: "Summer", action: "Harvest", notes: "Produces multiple flushes; pick regularly." },
@@ -1077,12 +1078,7 @@ export default function BroadviewFarmPlanner() {
               strokeWidth={selectedArea === "h4" ? 2 : 1}
               onClick={() => handleSelectArea("h4")} style={{ cursor: "pointer" }} />
 
-            {/* Strawberry pot — circle upper-left of H4 box */}
-            <circle cx={ML.h4Bounds.x + 20} cy={ML.h4Bounds.y + 18} r={12}
-              fill={C.danger + "18"} stroke={C.danger + "55"} strokeWidth={1} />
-            <text x={ML.h4Bounds.x + 20} y={ML.h4Bounds.y + 14} textAnchor="middle" fill={C.danger + "88"} fontSize={4}>Strawberry</text>
-            <text x={ML.h4Bounds.x + 20} y={ML.h4Bounds.y + 21} textAnchor="middle" fill={C.danger} fontSize={8}>🍓</text>
-
+            {renderPlot("h4s", "🍓")}
             {renderPlot("h4a", "h4a")}
             {renderPlot("h4b", "h4b")}
             {renderPlot("h4d", "h4d")}
