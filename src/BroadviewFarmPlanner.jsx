@@ -97,17 +97,17 @@ const PLOTS = [
   { id: "h3d", area: "h3", name: "#4 Buckwheat / #7 Beets", type: "In-Ground", sqft: 100, status: "Recovering", color: C.soil },
   { id: "h3e", area: "h3", name: "#1 Live Compost Battery", type: "Compost", sqft: 40, status: "Active", color: C.warn },
   { id: "h4a", area: "h4", name: "Pole Beans", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
-  { id: "h4b", area: "h4", name: "Burdock Bed", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
+  { id: "h4b", area: "h4", name: "Burdock & Wild Mint", type: "Raised Bed", sqft: 50, status: "Active", color: C.raisedBed },
   { id: "h4d", area: "h4", name: "Greens Bed 1", type: "Raised Bed", sqft: 20, status: "Recovering", color: C.raisedBed },
   { id: "h4f", area: "h4", name: "Greens Bed 2", type: "Raised Bed", sqft: 20, status: "Recovering", color: C.raisedBed },
   { id: "h4g", area: "h4", name: "Raspberry Canes", type: "Raised Bed", sqft: 30, status: "Active", color: C.raisedBed },
   { id: "h4e", area: "h4", name: "Lemon Balm & Wild Parsley", type: "Raised Bed", sqft: 40, status: "Active", color: C.raisedBed },
-  { id: "h5a", area: "h5", name: "North Deck (Best Sun)", type: "Container", sqft: 80, status: "Active", color: C.dehydrator },
+  { id: "h5a", area: "h5", name: "North Deck", type: "Container", sqft: 80, status: "Active", color: C.dehydrator },
   { id: "h5b", area: "h5", name: "Mid Deck", type: "Container", sqft: 60, status: "Active", color: C.dehydrator },
-  { id: "h5c", area: "h5", name: "South Deck (Most Sun)", type: "Container", sqft: 60, status: "Active", color: C.dehydrator },
-  { id: "h6a", area: "h6", name: "Bitter Pepper Pot", type: "Indoor", sqft: 5, status: "Active", color: C.greenhouse },
-  { id: "h6b", area: "h6", name: "Carrot & Onion Bin", type: "Indoor", sqft: 10, status: "Active", color: C.greenhouse },
-  { id: "h6c", area: "h6", name: "Lemon Lime Area", type: "Indoor", sqft: 15, status: "Active", color: C.greenhouse },
+  { id: "h5c", area: "h5", name: "South Deck", type: "Container", sqft: 60, status: "Active", color: C.dehydrator },
+  { id: "h6a", area: "h6", name: "South Indoor", type: "Indoor", sqft: 5, status: "Active", color: C.greenhouse },
+  { id: "h6b", area: "h6", name: "Mid Indoor", type: "Indoor", sqft: 10, status: "Active", color: C.greenhouse },
+  { id: "h6c", area: "h6", name: "North Indoor", type: "Indoor", sqft: 15, status: "Active", color: C.greenhouse },
 ];
 
 // ─── SVG Map Layout ───
@@ -398,6 +398,11 @@ const PLANTS = [
       { season: "Spring", action: "Sow", notes: "Direct sow; deep taproot needs loose soil." },
       { season: "Fall", action: "Harvest", notes: "Dig roots at end of first year for best flavor." },
     ]},
+  { id: "wild_mint_h4b", name: "Wild Mint", plot: "h4b", type: "Perennial Herb", count: "2-3 plants",
+    maintenance: [
+      { season: "Spring", action: "Prune", notes: "Cut back hard; contain spread — aggressive grower." },
+      { season: "Summer", action: "Harvest", notes: "Pinch leaves for tea and cooking." },
+    ]},
   { id: "pole_beans", name: "Pole Beans", plot: "h4a", type: "Annual", count: "~20 seeds",
     maintenance: [
       { season: "Spring", action: "Sow", notes: "Sow after last frost; train on trellis." },
@@ -419,34 +424,87 @@ const PLANTS = [
       { season: "Summer", action: "Harvest", notes: "Produces multiple flushes; pick regularly." },
       { season: "Fall", action: "Harvest", notes: "Final harvest before frost." },
     ]},
-  { id: "deck_herbs", name: "Mixed Herbs (deck)", plot: "h5a", type: "Annual/Perennial Herb", count: "Multiple",
+  // ── H5a — North Deck ──
+  { id: "strawberry_pyramid", name: "Strawberry Pyramid Planter", plot: "h5a", type: "Container Perennial", count: "1 pyramid planter (coconut coir lined)",
     maintenance: [
-      { season: "Spring", action: "Sow", notes: "Plant basil, oregano, parsley, dill." },
-      { season: "Summer", action: "Harvest", notes: "Pinch regularly for cooking." },
-      { season: "Fall", action: "Protect", notes: "Move tender herbs indoors before frost." },
+      { season: "Spring", action: "Nutrient", notes: "Check for resprout — uncertain after winter. Top-dress with compost." },
+      { season: "Summer", action: "Harvest", notes: "Pick berries if plants recover." },
     ]},
-  { id: "deck_greens", name: "Salad Greens (deck)", plot: "h5b", type: "Annual", count: "~10 containers",
+  { id: "bonsai_peach", name: "Bonsai Peach", plot: "h5a", type: "Container Perennial", count: "1 tree (2 ft planter)",
     maintenance: [
-      { season: "Spring", action: "Sow", notes: "Succession plant lettuce, arugula, mesclun." },
-      { season: "Summer", action: "Harvest", notes: "Cut-and-come-again; re-sow every 2 weeks." },
+      { season: "Winter", action: "Prune", notes: "Light structural pruning while dormant." },
+      { season: "Spring", action: "Nutrient", notes: "Feed with balanced fertilizer." },
+      { season: "Summer", action: "Harvest", notes: "Pick fruit when ripe and fragrant." },
     ]},
+  // ── H5b — Mid Deck ──
+  { id: "citrus_lime_1", name: "Lime Tree #1", plot: "h5b", type: "Perennial Tree", count: "1 tree",
+    maintenance: [
+      { season: "Year-round", action: "Water", notes: "Keep soil evenly moist; well-drained." },
+      { season: "Spring", action: "Nutrient", notes: "Feed monthly with citrus fertilizer." },
+      { season: "Fall", action: "Protect", notes: "Bring indoors before frost." },
+    ]},
+  { id: "citrus_lime_2", name: "Lime Tree #2", plot: "h5b", type: "Perennial Tree", count: "1 tree",
+    maintenance: [
+      { season: "Year-round", action: "Water", notes: "Keep soil evenly moist; well-drained." },
+      { season: "Spring", action: "Nutrient", notes: "Feed monthly with citrus fertilizer." },
+      { season: "Fall", action: "Protect", notes: "Bring indoors before frost." },
+    ]},
+  { id: "spearmint_pot", name: "Spearmint", plot: "h5b", type: "Perennial Herb", count: "1 plant (6\" pot)",
+    maintenance: [
+      { season: "Spring", action: "Prune", notes: "Cut back to encourage bushy growth." },
+      { season: "Summer", action: "Harvest", notes: "Pinch leaves for tea and cooking." },
+    ]},
+  { id: "goji_pot", name: "Goji Berry", plot: "h5b", type: "Perennial Shrub", count: "1 plant (12\" pot)",
+    maintenance: [
+      { season: "Spring", action: "Prune", notes: "Light pruning to shape." },
+      { season: "Summer", action: "Harvest", notes: "Pick berries when bright red." },
+    ]},
+  { id: "aloe_pot", name: "Aloe Vera", plot: "h5b", type: "Perennial Succulent", count: "1 plant (6\" pot)",
+    maintenance: [
+      { season: "Year-round", action: "Water", notes: "Water sparingly; let soil dry between waterings." },
+      { season: "Fall", action: "Protect", notes: "Bring indoors before frost." },
+    ]},
+  { id: "fig_planter", name: "Fig", plot: "h5b", type: "Perennial Tree", count: "1 tree (8\" planter)",
+    maintenance: [
+      { season: "Winter", action: "Protect", notes: "Wrap or bring indoors in hard freeze." },
+      { season: "Spring", action: "Prune", notes: "Shape and remove dead wood." },
+      { season: "Summer", action: "Harvest", notes: "Pick figs when soft and drooping." },
+    ]},
+  // ── H5c — South Deck ──
+  { id: "herb_log", name: "Mixed Herb Log Planter", plot: "h5c", type: "Container Perennial", count: "Carved wood log stump w/ soil",
+    maintenance: [
+      { season: "Spring", action: "Sow", notes: "Replant oregano and goji starts in log." },
+      { season: "Summer", action: "Harvest", notes: "Pinch oregano regularly; harvest goji berries." },
+    ]},
+  { id: "oregano_log", name: "Oregano", plot: "h5c", type: "Perennial Herb", count: "In log planter",
+    maintenance: [
+      { season: "Spring", action: "Prune", notes: "Cut back to encourage fresh growth." },
+      { season: "Summer", action: "Harvest", notes: "Pinch for cooking; flowers attract pollinators." },
+    ]},
+  { id: "goji_log", name: "Goji Berry (log planter)", plot: "h5c", type: "Perennial Shrub", count: "In log planter",
+    maintenance: [
+      { season: "Spring", action: "Prune", notes: "Trim to fit log container." },
+      { season: "Summer", action: "Harvest", notes: "Pick berries when bright red." },
+    ]},
+  // ── H6a — South Indoor ──
   { id: "pepper_indoor", name: "Bitter Pepper (indoor)", plot: "h6a", type: "Annual", count: "1-2 plants",
     maintenance: [
       { season: "Winter", action: "Sow", notes: "Start seeds indoors in January." },
       { season: "Spring", action: "Nutrient", notes: "Fertilize bi-weekly during growth." },
       { season: "Summer", action: "Harvest", notes: "Pick peppers for drying." },
     ]},
+  // ── H6b — Mid Indoor ──
+  { id: "basil_indoor", name: "Basil (indoor)", plot: "h6b", type: "Annual Herb", count: "1 plant (4\" planter)",
+    maintenance: [
+      { season: "Year-round", action: "Light", notes: "Needs 6-8 hrs light; supplement with grow light in winter." },
+      { season: "Year-round", action: "Harvest", notes: "Pinch tips regularly to prevent bolting." },
+    ]},
+  // ── H6c — North Indoor ──
   { id: "citrus_lemon", name: "Lemon (indoor)", plot: "h6c", type: "Perennial Tree", count: "1 tree",
     maintenance: [
       { season: "Year-round", action: "Water", notes: "Keep soil evenly moist; well-drained." },
       { season: "Spring", action: "Nutrient", notes: "Feed monthly with citrus fertilizer." },
       { season: "Summer", action: "Harvest", notes: "Pick lemons as needed year-round." },
-    ]},
-  { id: "citrus_lime", name: "Lime (indoor)", plot: "h6c", type: "Perennial Tree", count: "1 tree",
-    maintenance: [
-      { season: "Year-round", action: "Water", notes: "Consistent moisture; avoid waterlogging." },
-      { season: "Spring", action: "Nutrient", notes: "Feed monthly with citrus fertilizer." },
-      { season: "Summer", action: "Harvest", notes: "Pick limes as they mature." },
     ]},
 ];
 
