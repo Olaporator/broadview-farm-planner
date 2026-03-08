@@ -89,6 +89,8 @@ const PLOTS = [
   { id: "h1a", area: "h1", name: "Mulch Mound & Cherry Tree", type: "Food Forest", sqft: 400, status: "Established", color: C.raised },
   { id: "h1b", area: "h1", name: "Graft Tree & Companions", type: "Food Forest", sqft: 600, status: "Established", color: C.raised },
   { id: "h1c", area: "h1", name: "Douglas Fir & Bay Laurel", type: "Food Forest", sqft: 800, status: "Established", color: C.raised },
+  { id: "h1g", area: "h1", name: "Gooseberry", type: "Perennial Shrub", sqft: 10, status: "Established", color: C.warn },
+  { id: "h1v", area: "h1", name: "Grape Vine", type: "Perennial Vine", sqft: 10, status: "Established", color: C.summer },
   { id: "h2a", area: "h2", name: "Burdock Bed", type: "Perennial Bed", sqft: 100, status: "Active", color: C.raisedBed },
   { id: "h2c", area: "h2", name: "Blackberry & Huckleberry Row", type: "Perennial Bed", sqft: 400, status: "Established", color: C.raisedBed },
   { id: "h3a", area: "h3", name: "#2 Last Ditch Bed (Rhubarb)", type: "In-Ground", sqft: 80, status: "Struggling", color: C.soil },
@@ -126,7 +128,6 @@ const ML = {
   h6Bounds: { x: 200, y: 515, w: 260, h: 18 },        // Indoor — INSIDE house, bottom flush w/ house bottom (535-18=517→515)
   deck: { x: 140, y: 540, w: 380, h: 18 },            // Horizontal deck below house
   h5Bounds: { x: 145, y: 542, w: 370, h: 14 },        // Containers ON the deck
-  // Grape & Gooseberry sit at y~575
   h1Bounds: { x: 65, y: 610, w: 575, h: 120 },        // Food forest — BOTTOM (west, downhill)
   h2Bounds: { x: 15, y: 42, w: 50, h: 495 },          // Shade bed — LEFT (north) strip
   h4Bounds: { x: 580, y: 175, w: 90, h: 360 },        // RIGHT (south) strip
@@ -141,6 +142,8 @@ const PLOT_POS = {
   h1a: { x: 500, y: 625, w: 120, h: 90 },           // Cherry Tree (RIGHT/south edge of land)
   h1b: { x: 250, y: 630, w: 120, h: 85 },           // Graft Tree & Companions (center)
   h1c: { x: 80, y: 625, w: 120, h: 90 },            // Douglas Fir & Bay Laurel (LEFT/north edge)
+  h1g: { x: 190, y: 565, w: 20, h: 20 },              // Gooseberry — below deck, left
+  h1v: { x: 370, y: 565, w: 20, h: 20 },              // Grape vine — below deck, right
 
   // H2 — Shade (left strip). h2a=burdock at bottom (flush w house), h2c=blackberry/huckleberry row above
   h2a: { x: 18, y: 420, w: 44, h: 80 },              // Burdock — at bottom, flush with house bottom
@@ -268,6 +271,18 @@ const PLANTS = [
     maintenance: [
       { season: "Spring", action: "Harvest", notes: "Pick outer leaves for soups and salads." },
       { season: "Summer", action: "Harvest", notes: "Harvest before bolting in heat." },
+    ]},
+  { id: "gooseberry", name: "Gooseberry", plot: "h1g", type: "Perennial Shrub", count: "1 plant",
+    maintenance: [
+      { season: "Winter", action: "Prune", notes: "Remove oldest stems; keep open vase shape for airflow." },
+      { season: "Spring", action: "Nutrient", notes: "Top-dress with compost; mulch to retain moisture." },
+      { season: "Summer", action: "Harvest", notes: "Pick when berries are soft and slightly translucent." },
+    ]},
+  { id: "grape_vine", name: "Grape Vine", plot: "h1v", type: "Perennial Vine", count: "1 vine",
+    maintenance: [
+      { season: "Winter", action: "Prune", notes: "Hard prune to 2-3 buds per spur while dormant." },
+      { season: "Spring", action: "Prune", notes: "Thin shoots; train onto support structure." },
+      { season: "Summer", action: "Harvest", notes: "Pick clusters when sweet and fully colored." },
     ]},
   { id: "burdock", name: "Burdock", plot: "h2a", type: "Perennial", count: "5-8 plants",
     maintenance: [
@@ -1024,11 +1039,9 @@ export default function BroadviewFarmPlanner() {
             {renderPlot("h5b", "🌿")}
             {renderPlot("h5c", "🌿")}
 
-            {/* ═══ GRAPE & GOOSEBERRY — below deck ═══ */}
-            <circle cx={200} cy={575} r={10} fill={C.warn + "15"} stroke={C.warn + "44"} strokeWidth={1} />
-            <text x={200} y={592} textAnchor="middle" fill={C.warn + "88"} fontSize={6} fontWeight={700}>Gooseberry</text>
-            <circle cx={380} cy={575} r={10} fill={C.summer + "15"} stroke={C.summer + "44"} strokeWidth={1} />
-            <text x={380} y={592} textAnchor="middle" fill={C.summer + "88"} fontSize={6} fontWeight={700}>Grape</text>
+            {/* ═══ GRAPE & GOOSEBERRY — below deck, clickable plots ═══ */}
+            {renderPlot("h1g", "🫐")}
+            {renderPlot("h1v", "🍇")}
 
             {/* ═══ H1 — FOOD FOREST (bottom of lot, west/downhill) ═══ */}
             <rect x={ML.h1Bounds.x} y={ML.h1Bounds.y} width={ML.h1Bounds.w} height={ML.h1Bounds.h}
