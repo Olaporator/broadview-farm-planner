@@ -251,11 +251,6 @@ const PLANTS = [
       { season: "Spring", action: "Prune", notes: "Deadhead spent flowers; maintain rounded shape." },
       { season: "Summer", action: "Harvest", notes: "Cut flower spikes for drying." },
     ]},
-  { id: "thyme_h1", name: "Thyme", plot: "h1b", type: "Perennial Herb", count: "3 plants",
-    maintenance: [
-      { season: "Spring", action: "Prune", notes: "Cut back 1/3 to encourage bushiness." },
-      { season: "Summer", action: "Harvest", notes: "Pinch tips regularly for culinary use." },
-    ]},
   { id: "blueberry", name: "Blueberry", plot: "h1c", type: "Perennial Shrub", count: "1 plant",
     maintenance: [
       { season: "Spring", action: "Prune", notes: "Remove thin/weak canes; maintain vase shape." },
@@ -351,6 +346,11 @@ const PLANTS = [
       { season: "Summer", action: "Harvest", notes: "Pinch tips regularly to encourage bushiness." },
       { season: "Summer", action: "Protect", notes: "Watch for pests attracted to tomatoes." },
     ]},
+  { id: "thyme_h3c", name: "Thyme", plot: "h3c", type: "Perennial Herb", count: "2-3 plants",
+    maintenance: [
+      { season: "Spring", action: "Prune", notes: "Cut back 1/3 to encourage bushiness." },
+      { season: "Summer", action: "Harvest", notes: "Pinch tips regularly for culinary use." },
+    ]},
   { id: "sage", name: "Sage (2yr established)", plot: "h3f", type: "Perennial Herb", count: "2 plants",
     maintenance: [
       { season: "Spring", action: "Prune", notes: "Cut back 1/3 after winter. 2yr established — well-rooted." },
@@ -380,10 +380,6 @@ const PLANTS = [
   { id: "volunteer_tomato", name: "Volunteer Tomato (#9)", plot: "h3b", type: "Annual", count: "1 plant",
     maintenance: [
       { season: "Summer", action: "Water", notes: "From previous year dropped seed. Stake if it grows large." },
-    ]},
-  { id: "thyme_h3", name: "Thyme (surviving)", plot: "h3b", type: "Perennial Herb", count: "1 plant",
-    maintenance: [
-      { season: "Spring", action: "Prune", notes: "Trim woody growth to encourage fresh shoots." },
     ]},
   { id: "buckwheat", name: "Buckwheat Cover Crop (#4)", plot: "h3d", type: "Annual Cover", count: "Broadcast",
     maintenance: [
