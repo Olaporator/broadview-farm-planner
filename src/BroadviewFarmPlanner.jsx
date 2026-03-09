@@ -674,7 +674,7 @@ export default function BroadviewFarmPlanner() {
         return all;
       };
       const [tasks, methods, areas, plots, plants] = await Promise.all([
-        fetchAll("tblwxecwIEV6Ehu6F", 'FIND("rec2u6894MxSXKqlk",ARRAYJOIN({Project}))'),
+        fetchAll("tblwxecwIEV6Ehu6F", 'FIND("10737",ARRAYJOIN({Project}))'),
         fetchAll("tblqZKea6J4Thvgtz"),
         fetchAll("tbl7ztPLlm7wevuh9"),
         fetchAll("tblrpebzWu7z2uwaX"),
