@@ -310,11 +310,11 @@ const PLANTS = [
       { season: "Spring", action: "Harvest", notes: "Cut leaves 1\" above ground regularly." },
       { season: "Summer", action: "Harvest", notes: "Pinch flowers for salads or allow to set seed." },
     ]},
-  { id: "garlic", name: "Garlic", plot: "h3a", type: "Annual", count: "~20 cloves",
+  { id: "garlic", name: "Garlic (Bulbils — 2yr cycle)", plot: "h3a", type: "Biennial", count: "~20 bulbils",
     maintenance: [
-      { season: "Fall", action: "Sow", notes: "Plant cloves Oct-Nov, 6\" apart, 2\" deep." },
+      { season: "Spring", action: "Sow", notes: "Plant bulbils March 2026, 1\" deep, 2-4\" apart. Year 1 produces rounds." },
       { season: "Spring", action: "Nutrient", notes: "Top-dress with compost in early spring." },
-      { season: "Spring", action: "Prune", notes: "Remove scapes when they curl (early June)." },
+      { season: "Summer", action: "Harvest", notes: "Harvest rounds when tops yellow (~Aug). Save all for fall replanting." },
       { season: "Summer", action: "Harvest", notes: "Harvest when lower leaves brown (mid-July)." },
     ]},
   { id: "squash", name: "Winter Squash", plot: "h3b", type: "Annual", count: "3-4 plants",
@@ -379,12 +379,12 @@ const PLANTS = [
       { season: "Summer", action: "Harvest", notes: "Pick when fully red. Everbearing varieties produce multiple flushes." },
       { season: "Fall", action: "Mulch", notes: "Light mulch for winter protection; perennial-only bed — zero annual replanting." },
     ]},
-  { id: "garlic_h3d", name: "Garlic", plot: "h3d", type: "Annual", count: "~30 cloves",
+  { id: "garlic_h3d", name: "Garlic (Bulbils — 2yr cycle)", plot: "h3d", type: "Biennial", count: "~50 bulbils",
     maintenance: [
-      { season: "Fall", action: "Sow", notes: "Plant cloves Oct-Nov, 6\" apart, 2\" deep in mounded bed." },
-      { season: "Spring", action: "Nutrient", notes: "Top-dress with compost in early spring." },
-      { season: "Spring", action: "Prune", notes: "Remove scapes when they curl (early June)." },
-      { season: "Summer", action: "Harvest", notes: "Harvest when lower leaves brown (mid-July). Cure 3-4 weeks." },
+      { season: "Spring", action: "Sow", notes: "Plant bulbils March 2026 after mound prep, 1\" deep, 2-4\" apart. Year 1 produces single rounds." },
+      { season: "Spring", action: "Nutrient", notes: "Top-dress with compost. Bulbils are small — keep weeded and mulched." },
+      { season: "Summer", action: "Harvest", notes: "Harvest rounds (marble-to-golf-ball sized) when tops yellow, ~Aug. Cure 1 week. Save ALL for fall replanting." },
+      { season: "Fall", action: "Sow", notes: "Replant cured rounds Oct, 2\" deep, 6\" apart. These produce full bulbs by Jul 2027." },
     ]},
   { id: "onion_h3d", name: "Onion (long-day PNW variety)", plot: "h3d", type: "Annual", count: "~40 sets",
     maintenance: [
@@ -1321,7 +1321,7 @@ export default function BroadviewFarmPlanner() {
                 <div key={m} style={{ textAlign: "center", fontSize: 9, fontWeight: 600, color: C.textDim, padding: "2px 0" }}>{m}</div>
               ))}
               {[
-                { label: "Garlic", start: 9, end: 2, color: C.raised },
+                { label: "Garlic (bulbils→rounds→bulbs)", start: 2, end: 9, color: C.raised },
                 { label: "Tomatoes", start: 2, end: 8, color: C.hugel },
                 { label: "Squash", start: 4, end: 8, color: C.hugel },
                 { label: "Beans", start: 4, end: 7, color: C.raised },
